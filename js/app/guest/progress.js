@@ -34,24 +34,28 @@ export const progress = (() => {
     };
 
     /**
+     * @returns {void}
+     */
+    const done = () => {
+        if (!valid) return;
+        valid = false;
+        cancelProgress = null;
+        document.dispatchEvent(new Event('undangan.progress.done'));
+    };
+
+    /**
      * @param {string} type
      * @param {boolean} [skip=false]
      * @returns {void}
      */
     const complete = (type, skip = false) => {
-        if (!valid) {
-            return;
-        }
+        if (!valid) return;
 
         loaded += 1;
         info.innerText = `Loading ${type} ${skip ? 'skipped' : 'complete'} ${showInformation()}`;
         bar.style.width = Math.min((loaded / total) * 100, 100).toString() + '%';
 
-        if (loaded === total) {
-            valid = false;
-            cancelProgress = null;
-            document.dispatchEvent(new Event('undangan.progress.done'));
-        }
+        if (loaded === total) done();
     };
 
     /**
@@ -59,12 +63,13 @@ export const progress = (() => {
      * @returns {void}
      */
     const invalid = (type) => {
-        if (valid) {
-            valid = false;
-            bar.style.backgroundColor = 'red';
-            info.innerText = `Error loading ${type} ${showInformation()}`;
-            document.dispatchEvent(new Event('undangan.progress.invalid'));
-        }
+        loaded += 1;
+        bar.style.width = Math.min((loaded / total) * 100, 100).toString() + '%';
+        bar.style.backgroundColor = 'red';
+        info.innerText = `Error loading ${type} ${showInformation()}`;
+        document.dispatchEvent(new Event('undangan.progress.invalid'));
+
+        if (loaded === total) done();
     };
 
     /**

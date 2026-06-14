@@ -290,7 +290,12 @@ export const guest = (() => {
     /**
      * @returns {Promise<void>}
      */
+    let booted = false;
+
     const booting = async () => {
+        if (booted) return;
+        booted = true;
+
         animateSvg();
         countDownDate();
         showGuestName();
@@ -310,7 +315,10 @@ export const guest = (() => {
         await util.changeOpacity(document.getElementById('welcome'), true);
 
         // remove loading screen and show welcome screen.
-        await util.changeOpacity(document.getElementById('loading'), false).then((el) => el.remove());
+        const loading = document.getElementById('loading');
+        if (loading) {
+            await util.changeOpacity(loading, false).then((el) => el.remove());
+        }
     };
 
     /**
@@ -333,8 +341,11 @@ export const guest = (() => {
         const params = new URLSearchParams(window.location.search);
 
         window.addEventListener('resize', util.debounce(slide));
-        document.addEventListener('undangan.progress.done', () => booting());
+        document.addEventListener('undangan.progress.done', () => booting(), { once: true });
         document.addEventListener('hide.bs.modal', () => document.activeElement?.blur());
+
+        // safety timeout: proceed to welcome after 30s even if some resources hang
+        util.timeOut(() => document.dispatchEvent(new Event('undangan.progress.done')), 30000);
         document.getElementById('button-modal-download').addEventListener('click', (e) => {
             img.download(e.currentTarget.getAttribute('data-src'));
         });
