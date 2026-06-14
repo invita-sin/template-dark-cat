@@ -16,6 +16,6 @@
         "lint:html": "htmlhint **/*.html",
         "dev": "npx esbuild js/*.js --bundle --outdir=dist --servedir=. --serve=8080",
         "build": "npx esbuild js/*.js --bundle --minify --outdir=dist",
-        "build:public": "npm run build && node -e \"const fs = require('fs-extra'); const path = require('path'); fs.ensureDir('public').then(() => Promise.all([...['assets', 'css', 'index.html', 'dashboard.html'].map(f => fs.copy(f, 'public/' + f)), ...['guest.js', 'admin.js'].map(f => fs.copy(path.join('dist', f), path.join('public', f)))])).then(() => console.log('✅ Successfully!'));\""
+        "build:public": "npm run build && mkdir -p public && cp -r assets css index.html dashboard.html dist/guest.js dist/admin.js public/"
     }
 }
