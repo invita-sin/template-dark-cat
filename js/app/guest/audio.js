@@ -1,16 +1,11 @@
 import { progress } from './progress.js';
 import { util } from '../../common/util.js';
-import { cache } from '../../connection/cache.js';
 
 export const audio = (() => {
 
     const statePlay = '<i class="fa-solid fa-circle-pause spin-button"></i>';
     const statePause = '<i class="fa-solid fa-circle-play"></i>';
 
-    /**
-     * @param {boolean} [playOnOpen=true]
-     * @returns {Promise<void>}
-     */
     const load = async (playOnOpen = true) => {
 
         const url = document.body.getAttribute('data-audio');
@@ -19,13 +14,10 @@ export const audio = (() => {
             return;
         }
 
-        /**
-         * @type {HTMLAudioElement|null}
-         */
         let audioEl = null;
 
         try {
-            audioEl = new Audio(await cache('audio').withForceCache().get(url, progress.getAbort()));
+            audioEl = new Audio(url);
             audioEl.loop = true;
             audioEl.muted = false;
             audioEl.autoplay = false;
@@ -40,9 +32,6 @@ export const audio = (() => {
         let isPlay = false;
         const music = document.getElementById('button-music');
 
-        /**
-         * @returns {Promise<void>}
-         */
         const play = async () => {
             if (!navigator.onLine || !music) {
                 return;
@@ -60,9 +49,6 @@ export const audio = (() => {
             }
         };
 
-        /**
-         * @returns {void}
-         */
         const pause = () => {
             isPlay = false;
             audioEl.pause();
@@ -81,9 +67,6 @@ export const audio = (() => {
         music.addEventListener('click', () => isPlay ? pause() : play());
     };
 
-    /**
-     * @returns {object}
-     */
     const init = () => {
         progress.add();
 

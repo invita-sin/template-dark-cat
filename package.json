@@ -14,8 +14,8 @@
         "lint:js": "eslint js",
         "lint:css": "stylelint css",
         "lint:html": "htmlhint **/*.html",
-        "dev": "npx esbuild js/*.js --bundle --outdir=dist --servedir=. --serve=8080",
-        "build": "npx esbuild js/*.js --bundle --minify --outdir=dist",
-        "build:public": "npm run build && mkdir -p public && cp -r assets css index.html dashboard.html dist/guest.js dist/admin.js .nojekyll public/"
+        "dev": "npx esbuild js/guest.js --bundle --outdir=dist --servedir=. --serve=8080",
+        "build": "npx esbuild js/guest.js --bundle --minify --outdir=dist",
+        "build:public": "npm run build && mkdir -p public && cp -r assets css index.html dist/guest.js .nojekyll public/"
     }
 }

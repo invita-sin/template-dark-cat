@@ -8,11 +8,7 @@ import { loader } from '../../libs/loader.js';
 import { theme } from '../../common/theme.js';
 import { lang } from '../../common/language.js';
 import { storage } from '../../common/storage.js';
-import { session } from '../../common/session.js';
-import { offline } from '../../common/offline.js';
-import { comment } from '../components/comment.js';
 import * as confetti from '../../libs/confetti.js';
-import { pool } from '../../connection/request.js';
 
 export const guest = (() => {
 
@@ -242,33 +238,6 @@ export const guest = (() => {
         });
     };
 
-    /**
-     * @returns {void}
-     */
-    const buildGoogleCalendar = () => {
-        /**
-         * @param {string} d 
-         * @returns {string}
-         */
-        const formatDate = (d) => (new Date(d.replace(' ', 'T') + ':00Z')).toISOString().replace(/[-:]/g, '').split('.').shift();
-
-        const url = new URL('https://calendar.google.com/calendar/render');
-        const data = new URLSearchParams({
-            action: 'TEMPLATE',
-            text: 'The Wedding of Wahyu and Riski',
-            dates: `${formatDate('2023-03-15 10:00')}/${formatDate('2023-03-15 11:00')}`,
-            details: 'Tanpa mengurangi rasa hormat, kami mengundang Anda untuk berkenan menghadiri acara pernikahan kami. Terima kasih atas perhatian dan doa restu Anda, yang menjadi kebahagiaan serta kehormatan besar bagi kami.',
-            location: 'RT 10 RW 02, Desa Pajerukan, Kec. Kalibagor, Kab. Banyumas, Jawa Tengah 53191.',
-            ctz: config.get('tz'),
-        });
-
-        url.search = data.toString();
-        document.querySelector('#home button')?.addEventListener('click', () => window.open(url, '_blank'));
-    };
-
-    /**
-     * @returns {object}
-     */
     const loaderLibs = () => {
         progress.add();
 
@@ -287,9 +256,6 @@ export const guest = (() => {
         };
     };
 
-    /**
-     * @returns {Promise<void>}
-     */
     let booted = false;
 
     const booting = async () => {
@@ -301,125 +267,52 @@ export const guest = (() => {
         showGuestName();
         modalImageClick();
         normalizeArabicFont();
-        buildGoogleCalendar();
 
-        if (information.has('presence')) {
-            document.getElementById('form-presence').value = information.get('presence') ? '1' : '2';
-        }
-
-        if (information.get('info')) {
-            document.getElementById('information')?.remove();
-        }
-
-        // wait until welcome screen is show.
         await util.changeOpacity(document.getElementById('welcome'), true);
 
-        // remove loading screen and show welcome screen.
         const loading = document.getElementById('loading');
         if (loading) {
             await util.changeOpacity(loading, false).then((el) => el.remove());
         }
     };
 
-    /**
-     * @returns {void}
-     */
     const pageLoaded = () => {
         lang.init();
-        offline.init();
-        comment.init();
         progress.init();
 
-        config = storage('config');
         information = storage('information');
 
         const vid = video.init();
         const img = image.init();
         const aud = audio.init();
         const lib = loaderLibs();
-        const token = document.body.getAttribute('data-key');
-        const params = new URLSearchParams(window.location.search);
 
         window.addEventListener('resize', util.debounce(slide));
         document.addEventListener('undangan.progress.done', () => booting(), { once: true });
         document.addEventListener('hide.bs.modal', () => document.activeElement?.blur());
 
-        // safety timeout: proceed to welcome after 30s even if some resources hang
         util.timeOut(() => document.dispatchEvent(new Event('undangan.progress.done')), 30000);
         document.getElementById('button-modal-download').addEventListener('click', (e) => {
             img.download(e.currentTarget.getAttribute('data-src'));
         });
 
-        if (!token || token.length <= 0) {
-            document.getElementById('comment')?.remove();
-            document.querySelector('a.nav-link[href="#comment"]')?.closest('li.nav-item')?.remove();
+        document.getElementById('comment')?.remove();
+        document.querySelector('a.nav-link[href="#comment"]')?.closest('li.nav-item')?.remove();
 
-            vid.load();
-            img.load();
-            aud.load();
-            lib.load({ confetti: document.body.getAttribute('data-confetti') === 'true' });
-        }
-
-        if (token && token.length > 0) {
-            // add 2 progress for config and comment.
-            // before img.load();
-            progress.add();
-            progress.add();
-
-            // if don't have data-src.
-            if (!img.hasDataSrc()) {
-                img.load();
-            }
-
-            session.guest(params.get('k') ?? token).then(({ data }) => {
-                document.dispatchEvent(new Event('undangan.session'));
-                progress.complete('config');
-
-                if (img.hasDataSrc()) {
-                    img.load();
-                }
-
-                vid.load();
-                aud.load();
-                lib.load({ confetti: data.is_confetti_animation });
-
-                comment.show()
-                    .then(() => progress.complete('comment'))
-                    .catch(() => progress.invalid('comment'));
-
-            }).catch(() => progress.invalid('config'));
-        }
+        vid.load();
+        img.load();
+        aud.load();
+        lib.load({ confetti: document.body.getAttribute('data-confetti') === 'true' });
     };
 
-    /**
-     * @returns {object}
-     */
     const init = () => {
         theme.init();
-        session.init();
 
-        if (session.isAdmin()) {
-            storage('user').clear();
-            storage('owns').clear();
-            storage('likes').clear();
-            storage('session').clear();
-            storage('comment').clear();
-        }
-
-        window.addEventListener('load', () => {
-            pool.init(pageLoaded, [
-                'image',
-                'video',
-                'audio',
-                'libs',
-                'gif',
-            ]);
-        });
+        window.addEventListener('load', pageLoaded);
 
         return {
             util,
             theme,
-            comment,
             guest: {
                 open,
                 modal,
