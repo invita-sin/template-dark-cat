@@ -1,0 +1,214 @@
+{
+  "inputs": {
+    "js/app/guest/progress.js": {
+      "bytes": 2203,
+      "imports": [],
+      "format": "esm"
+    },
+    "js/common/util.js": {
+      "bytes": 8623,
+      "imports": [],
+      "format": "esm"
+    },
+    "js/app/guest/video.js": {
+      "bytes": 1583,
+      "imports": [
+        {
+          "path": "js/app/guest/progress.js",
+          "kind": "import-statement",
+          "original": "./progress.js"
+        },
+        {
+          "path": "js/common/util.js",
+          "kind": "import-statement",
+          "original": "../../common/util.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "js/app/guest/image.js": {
+      "bytes": 1678,
+      "imports": [
+        {
+          "path": "js/app/guest/progress.js",
+          "kind": "import-statement",
+          "original": "./progress.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "js/app/guest/audio.js": {
+      "bytes": 1977,
+      "imports": [
+        {
+          "path": "js/app/guest/progress.js",
+          "kind": "import-statement",
+          "original": "./progress.js"
+        },
+        {
+          "path": "js/common/util.js",
+          "kind": "import-statement",
+          "original": "../../common/util.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "js/libs/bootstrap.js": {
+      "bytes": 513,
+      "imports": [],
+      "format": "esm"
+    },
+    "js/libs/loader.js": {
+      "bytes": 2358,
+      "imports": [],
+      "format": "esm"
+    },
+    "js/common/storage.js": {
+      "bytes": 1192,
+      "imports": [],
+      "format": "esm"
+    },
+    "js/common/theme.js": {
+      "bytes": 3352,
+      "imports": [
+        {
+          "path": "js/common/storage.js",
+          "kind": "import-statement",
+          "original": "./storage.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "js/common/language.js": {
+      "bytes": 2143,
+      "imports": [],
+      "format": "esm"
+    },
+    "js/libs/confetti.js": {
+      "bytes": 3116,
+      "imports": [],
+      "format": "esm"
+    },
+    "js/app/guest/guest.js": {
+      "bytes": 9520,
+      "imports": [
+        {
+          "path": "js/app/guest/video.js",
+          "kind": "import-statement",
+          "original": "./video.js"
+        },
+        {
+          "path": "js/app/guest/image.js",
+          "kind": "import-statement",
+          "original": "./image.js"
+        },
+        {
+          "path": "js/app/guest/audio.js",
+          "kind": "import-statement",
+          "original": "./audio.js"
+        },
+        {
+          "path": "js/app/guest/progress.js",
+          "kind": "import-statement",
+          "original": "./progress.js"
+        },
+        {
+          "path": "js/common/util.js",
+          "kind": "import-statement",
+          "original": "../../common/util.js"
+        },
+        {
+          "path": "js/libs/bootstrap.js",
+          "kind": "import-statement",
+          "original": "../../libs/bootstrap.js"
+        },
+        {
+          "path": "js/libs/loader.js",
+          "kind": "import-statement",
+          "original": "../../libs/loader.js"
+        },
+        {
+          "path": "js/common/theme.js",
+          "kind": "import-statement",
+          "original": "../../common/theme.js"
+        },
+        {
+          "path": "js/common/language.js",
+          "kind": "import-statement",
+          "original": "../../common/language.js"
+        },
+        {
+          "path": "js/common/storage.js",
+          "kind": "import-statement",
+          "original": "../../common/storage.js"
+        },
+        {
+          "path": "js/libs/confetti.js",
+          "kind": "import-statement",
+          "original": "../../libs/confetti.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "js/guest.js": {
+      "bytes": 99,
+      "imports": [
+        {
+          "path": "js/app/guest/guest.js",
+          "kind": "import-statement",
+          "original": "./app/guest/guest.js"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "dist/guest.js": {
+      "imports": [],
+      "exports": [],
+      "entryPoint": "js/guest.js",
+      "inputs": {
+        "js/app/guest/progress.js": {
+          "bytesInOutput": 1613
+        },
+        "js/common/util.js": {
+          "bytesInOutput": 6669
+        },
+        "js/app/guest/video.js": {
+          "bytesInOutput": 1411
+        },
+        "js/app/guest/image.js": {
+          "bytesInOutput": 1528
+        },
+        "js/app/guest/audio.js": {
+          "bytesInOutput": 1701
+        },
+        "js/libs/bootstrap.js": {
+          "bytesInOutput": 325
+        },
+        "js/libs/loader.js": {
+          "bytesInOutput": 2209
+        },
+        "js/common/storage.js": {
+          "bytesInOutput": 800
+        },
+        "js/common/theme.js": {
+          "bytesInOutput": 2502
+        },
+        "js/common/language.js": {
+          "bytesInOutput": 1789
+        },
+        "js/libs/confetti.js": {
+          "bytesInOutput": 2612
+        },
+        "js/app/guest/guest.js": {
+          "bytesInOutput": 7435
+        },
+        "js/guest.js": {
+          "bytesInOutput": 57
+        }
+      },
+      "bytes": 31007
+    }
+  }
+}

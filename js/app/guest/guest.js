@@ -259,6 +259,7 @@ export const guest = (() => {
     let booted = false;
 
     const booting = async () => {
+        console.log('booting() called');
         if (booted) return;
         booted = true;
 
@@ -277,6 +278,7 @@ export const guest = (() => {
     };
 
     const pageLoaded = () => {
+        console.log('pageLoaded() called');
         lang.init();
         progress.init();
 
@@ -306,6 +308,7 @@ export const guest = (() => {
     };
 
     const init = () => {
+        console.log('guest.init() called');
         theme.init();
 
         window.addEventListener('load', pageLoaded);
