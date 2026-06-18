@@ -2,7 +2,7 @@
     "devDependencies": {
         "@eslint/js": "^9.37.0",
         "eslint": "^9.37.0",
-        "esbuild": "^0.25.10",
+        "esbuild": "^0.28.1",
         "fs-extra": "^11.3.2",
         "globals": "^16.4.0",
         "htmlhint": "^1.7.1",
